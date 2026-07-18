@@ -7,31 +7,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
+            /* Cores de Fundo (Sólidas) */
             --bg-body: #050505;
             --bg-card: #111214;
-            --gold-light: #087afd;
-            --gold-main: #00a0fd;
-            --gold-dark: #0b64b8;
-            --gold-gradient: linear-gradient(135deg, var(--gold-light), var(--gold-main), var(--gold-dark));
+            
+            /* Paleta Principal em Hexadecimal */
+            --theme-light: #ffd118;
+            --theme-main: #d2b618;
+            --theme-dark: #bb9108;
+            --theme-gradient: linear-gradient(135deg, var(--theme-light), var(--theme-main), var(--theme-dark));
+
+            /* =========================================
+               🎨 CONTROLE DE SOMBRAS E TRANSPARÊNCIAS (#)
+               Os dois últimos dígitos definem a opacidade.
+               Ex: 66 = 40%, 40 = 25%, 26 = 15%, 80 = 50%
+               ========================================= */
+            --shadow-theme-strong: #c5a52266; /* Hover dos ícones sociais */
+            --shadow-theme-medium: #c5ad2240; /* Sombra normal do botão Salvar */
+            --shadow-theme-light:  #c59c2226; /* Sombra ao clicar no botão Salvar */
+            --shadow-card: #000000e6;
+            --shadow-img:  #00000080;
+            --shadow-text: #000000cc;
+            --bg-icon:    #111214bf;
+            --bg-loading: #ffffff1a;
+            
+            /* Ajuste de tamanho da logo da tela de carregamento */
+            --splash-logo-height: 80px; 
+            /* ========================================= */
         }
 
         /* =========================================
            🛠️ SISTEMA DE EDIÇÃO DE ÍCONES (FÁCIL AJUSTE)
-           =========================================
-           Altere o valor numérico de "--posicao".
-           Positivo (ex: 1, 1.5) = Move para CIMA 
-           Negativo (ex: -1, -1.5) = Move para BAIXO
-           Zero (0) = Centro exato
-        ========================================= */
+           ========================================= */
         .icons-container {
-            --forca: 15px; /* Intensidade do movimento. Se quiser movimentos maiores, aumente este valor */
+            --forca: 15px; 
         }
 
-        .icons-container .icon-btn:nth-child(1) { --posicao: -1;   } /* 1º Ícone (E-mail) */
-        .icons-container .icon-btn:nth-child(2) { --posicao: -1; } /* 2º Ícone (GitHub) */
-        .icons-container .icon-btn:nth-child(3) { --posicao: -1;    } /* 3º Ícone (Instagram) - Centro */
-        .icons-container .icon-btn:nth-child(4) { --posicao: -1; } /* 4º Ícone (WhatsApp) */
-        .icons-container .icon-btn:nth-child(5) { --posicao: -1;   } /* 5º Ícone (Telefone) */
+        .icons-container .icon-btn:nth-child(1) { --posicao: -1;   } 
+        .icons-container .icon-btn:nth-child(2) { --posicao: -1; } 
+        .icons-container .icon-btn:nth-child(3) { --posicao: -1;    } 
+        .icons-container .icon-btn:nth-child(4) { --posicao: -1; } 
+        .icons-container .icon-btn:nth-child(5) { --posicao: -1;   } 
         /* ========================================= */
 
         * {
@@ -55,10 +71,21 @@
 
         /* TELA DE INTRODUÇÃO */
         .splash-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background-color: var(--bg-body); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s; }
-        .splash-icon { font-size: 60px; background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; animation: pulse 1.5s infinite ease-in-out; will-change: transform; }
-        .splash-title { color: var(--gold-main); font-size: 18px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 30px; }
-        .loading-container { width: 180px; height: 3px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
-        .loading-bar { height: 100%; width: 0%; background: var(--gold-gradient); animation: loadProgress 1.8s ease-out forwards; }
+        
+        /* NOVA CONFIGURAÇÃO DA LOGO EM PNG */
+        .splash-logo { 
+            height: var(--splash-logo-height); /* Controlado na variável do :root */
+            width: auto; /* Mantém a proporção correta */
+            max-width: 80vw; /* Garante que não vai vazar a tela em celulares muito pequenos */
+            object-fit: contain; 
+            margin-bottom: 20px; 
+            animation: pulse 1.5s infinite ease-in-out; 
+            will-change: transform; 
+        }
+
+        .splash-title { color: var(--theme-main); font-size: 18px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; margin-bottom: 30px; }
+        .loading-container { width: 180px; height: 3px; background: var(--bg-loading); border-radius: 4px; overflow: hidden; }
+        .loading-bar { height: 100%; width: 0%; background: var(--theme-gradient); animation: loadProgress 1.8s ease-out forwards; }
         .splash-hidden { opacity: 0; visibility: hidden; }
 
         @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.7; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.7; } }
@@ -68,68 +95,64 @@
         @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
         /* CARTÃO PRINCIPAL */
-        .card { background-color: var(--bg-card); width: 100%; max-width: 414px; min-height: 100dvh; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 40px rgba(0, 0, 0, 0.9); }
+        .card { background-color: var(--bg-card); width: 100%; max-width: 414px; min-height: 100dvh; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 40px var(--shadow-card); }
 
         /* IMAGEM DE FUNDO - APAGADA */
-        .bottom-image-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 45vh; background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRvHuxVrD0GIXQ4pSiLcat7_WbVyPcVPSMDImY7EAM3w&s=10'); background-size: cover; background-position: center; z-index: 0; opacity: 0.15; }
+        .bottom-image-bg { position: absolute; bottom: 0; left: 0; width: 100%; height: 45vh; background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOt-KOTBEYATqVavwCPMgi0EXAFt-MyA7TuAvKGgm3Yw&s=10'); background-size: cover; background-position: center; z-index: 0; opacity: 0.15; }
         .bottom-image-bg::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, var(--bg-card) 0%, transparent 60%, var(--bg-card) 100%); }
 
-        /* CURVAS DOURADAS */
-        .card::before, .card::after { content: ''; position: absolute; border-radius: 50%; pointer-events: none; border: 1px solid var(--gold-dark); opacity: 0.3; z-index: 1; }
+        /* CURVAS TEMÁTICAS */
+        .card::before, .card::after { content: ''; position: absolute; border-radius: 50%; pointer-events: none; border: 1px solid var(--theme-dark); opacity: 0.3; z-index: 1; }
         .card::before { width: 150vw; height: 150vw; max-width: 600px; max-height: 600px; top: -30%; left: -25%; }
         .card::after { width: 200vw; height: 200vw; max-width: 800px; max-height: 800px; bottom: -65%; left: -50%; }
 
         /* CABEÇALHO E PERFIL */
         .header { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 30px 25px 0 25px; z-index: 2; }
-        .logo-icon { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; }
-        .header-text { color: var(--gold-main); text-align: right; font-size: 14px; font-weight: 500; line-height: 1.3; letter-spacing: 0.5px; text-transform: uppercase; }
+        .logo-icon { background: var(--theme-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 32px; }
+        .header-text { color: var(--theme-main); text-align: right; font-size: 14px; font-weight: 500; line-height: 1.3; letter-spacing: 0.5px; text-transform: uppercase; }
 
         .profile-section { margin-top: 2vh; display: flex; flex-direction: column; align-items: center; z-index: 2; width: 100%; padding: 0 20px; }
 
-        .img-ring { width: 140px; height: 140px; border-radius: 50%; background: var(--gold-gradient); padding: 3px; margin-bottom: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); }
+        .img-ring { width: 140px; height: 140px; border-radius: 50%; background: var(--theme-gradient); padding: 3px; margin-bottom: 12px; box-shadow: 0 10px 25px var(--shadow-img); }
         .img-inner-ring { width: 100%; height: 100%; border-radius: 50%; background-color: var(--bg-card); padding: 4px; }
-        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-main); background-color: #222; }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid var(--theme-main); background-color: #222222; }
 
-        .name { background: var(--gold-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; text-align: center; }
-        .title { color: var(--gold-light); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; font-weight: 500; }
-        .subtitle { color: #A0A0A5; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 400; }
+        .name { background: var(--theme-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 24px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; text-align: center; }
+        .title { color: var(--theme-light); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; font-weight: 500; }
+        .subtitle { color: #a0a0a5; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 400; }
 
         /* ÁREA CENTRAL */
         .middle-content { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; flex-grow: 1; width: 100%; padding: 15px 25px 0 25px; z-index: 2; }
-        .bio-text { color: #E0E0E0; font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 15px; font-weight: 300; }
+        .bio-text { color: #e0e0e0; font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 15px; font-weight: 300; }
 
         /* CONTAINER DOS ÍCONES */
         .icons-container { display: flex; justify-content: center; align-items: center; gap: 12px; width: 100%; margin-bottom: 30px; }
 
         .icon-btn { 
-            width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--gold-main); 
+            width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--theme-main); 
             display: flex; justify-content: center; align-items: center; 
-            color: var(--gold-main); text-decoration: none; font-size: 20px; 
-            background: rgba(17, 18, 20, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); 
-            
-            /* A mágica do sistema matemático acontece aqui (o '* -1' inverte para que positivo suba e negativo desça) */
+            color: var(--theme-main); text-decoration: none; font-size: 20px; 
+            background: var(--bg-icon); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); 
             transform: translateY(calc(var(--posicao) * var(--forca) * -1));
             transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; 
         }
 
         @media (hover: hover) {
             .icon-btn:hover { 
-                background: var(--gold-gradient); color: var(--bg-card); border-color: transparent; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); 
-                /* Mantém a posição original e apenas sobrepõe um efeito de subir e dar zoom */
+                background: var(--theme-gradient); color: var(--bg-card); border-color: transparent; box-shadow: 0 5px 15px var(--shadow-theme-strong); 
                 transform: translateY(calc((var(--posicao) * var(--forca) * -1) - 8px)) scale(1.1) !important;
             }
         }
 
         .icon-btn:active { 
-            /* Encolhe o ícone mantendo a posição original calculada */
             transform: translateY(calc(var(--posicao) * var(--forca) * -1)) scale(0.9) !important; 
-            background: var(--gold-main); color: var(--bg-card); transition: transform 0.1s; 
+            background: var(--theme-main); color: var(--bg-card); transition: transform 0.1s; 
         }
 
-        .action-btn { background: var(--gold-gradient); color: var(--bg-card); padding: 14px 35px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25); transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-        .action-btn:active { transform: scale(0.94); box-shadow: 0 4px 10px rgba(212, 175, 55, 0.15); }
+        .action-btn { background: var(--theme-gradient); color: var(--bg-card); padding: 14px 35px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 8px 20px var(--shadow-theme-medium); transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+        .action-btn:active { transform: scale(0.94); box-shadow: 0 4px 10px var(--shadow-theme-light); }
 
-        .footer-text { color: var(--gold-dark); font-size: 11px; margin-top: auto; margin-bottom: 25px; z-index: 2; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+        .footer-text { color: var(--theme-dark); font-size: 11px; margin-top: auto; margin-bottom: 25px; z-index: 2; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; text-shadow: 0 2px 4px var(--shadow-text); }
 
         @media (max-height: 667px) {
             .profile-section { margin-top: 2vh; }
@@ -142,7 +165,9 @@
 <body>
 
     <div class="splash-screen" id="splashScreen">
-        <i class="fas fa-code splash-icon"></i>
+        <!-- TROQUE O LINK ABAIXO PELO CAMINHO DA SUA LOGO PNG -->
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOt-KOTBEYATqVavwCPMgi0EXAFt-MyA7TuAvKGgm3Yw&s=10" alt="Sua Logo" class="splash-logo">
+        
         <h2 class="splash-title">Iniciando...</h2>
         <div class="loading-container">
             <div class="loading-bar"></div>
@@ -153,17 +178,16 @@
         <div class="bottom-image-bg"></div>
 
         <div class="header">
-            <i class="fas fa-code logo-icon"></i>
-            <div class="header-text">Software &<br>Tecnologia</div>
+
         </div>
 
         <div class="profile-section">
             <div class="img-ring">
                 <div class="img-inner-ring">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaRn0uqROzdoc39UAGhmUJdIrylWTH9iXWemyJcb0grg&s=10" alt="Pablo Henrique" class="profile-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOt-KOTBEYATqVavwCPMgi0EXAFt-MyA7TuAvKGgm3Yw&s=10" alt="Henrique" class="profile-img">
                 </div>
             </div>
-            <h1 class="name">Pablo Henrique</h1>
+            <h1 class="name">Henrique</h1>
             <p class="title">Desenvolvedor Web e Software</p>
             <p class="subtitle">Criador do Louisiana PDV</p>
         </div>
@@ -175,10 +199,10 @@
 
             <div class="icons-container">
                 <a href="mailto:seuemail@email.com" class="icon-btn" aria-label="E-mail"><i class="fas fa-envelope"></i></a>
-                <a href="#" class="icon-btn" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                <a href="#" class="icon-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="icon-btn" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                <a href="#" class="icon-btn" aria-label="Telefone"><i class="fas fa-phone-alt"></i></a>
+                <a href="https://github.com/HenriqueDev25/" class="icon-btn" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://www.instagram.com/" class="icon-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://web.whatsapp.com/send/?phone=5511981127561" class="icon-btn" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="tel:+5511981127561" class="icon-btn" aria-label="Telefone"><i class="fas fa-phone-alt"></i></a>
             </div>
 
             <a href="#" class="action-btn">
@@ -186,7 +210,7 @@
             </a>
         </div>
 
-        <p class="footer-text">Desenvolvido por Pablo</p>
+        <p class="footer-text">Desenvolvido por Henrique</p>
     </div>
 
     <script>
