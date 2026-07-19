@@ -208,17 +208,17 @@
         function salvarContato() {
             const vcard = `BEGIN:VCARD
 VERSION:3.0
-FN:Henrique
+FN:Dra. Rinalva Sena
 ORG:Louisiana PDV
-TITLE:Desenvolvedor Web e Software
-TEL;TYPE=WORK,VOICE:+5511981127561
+TITLE:Fisioterapia
+TEL;TYPE=WORK,VOICE:+5511982790767
 END:VCARD`;
 
             const blob = new Blob([vcard], { type: "text/vcard" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "Henrique.vcf";
+            a.download = "Rinalva_Sena.vcf";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
